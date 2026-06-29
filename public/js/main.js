@@ -1,5 +1,6 @@
 /**
- * main.js - AJAX-отправка формы, валидация, меню
+ * main.js - AJAX-отправка формы, валидация, мобильное меню
+ * Ресторан «Вкус Востока»
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,6 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initBookingForm();
 });
 
+/**
+ * Мобильное меню
+ */
 function initMobileMenu() {
     const toggle = document.querySelector('.mobile-toggle');
     const menu = document.querySelector('.nav-menu');
@@ -31,20 +35,30 @@ function initMobileMenu() {
     });
 }
 
+/**
+ * Плавная прокрутка к якорям
+ */
 function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             if (href === '#' || href === '') return;
+            
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                target.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
             }
         });
     });
 }
 
+/**
+ * AJAX-отправка формы бронирования
+ */
 function initBookingForm() {
     const form = document.getElementById('booking-form');
     if (!form) return;
@@ -53,34 +67,57 @@ function initBookingForm() {
     const responseDiv = document.getElementById('form-response');
     const errorSpans = form.querySelectorAll('.error-message');
     
+    // Очистка всех ошибок
     function clearErrors() {
-        errorSpans.forEach(span => span.textContent = '');
-        form.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+        errorSpans.forEach(span => {
+            span.textContent = '';
+        });
+        form.querySelectorAll('.error').forEach(el => {
+            el.classList.remove('error');
+        });
     }
     
+    // Отображение ошибок валидации
     function showErrors(errors) {
         clearErrors();
         for (const [field, message] of Object.entries(errors)) {
             const errorSpan = form.querySelector(`[data-error="${field}"]`);
-            if (errorSpan) errorSpan.textContent = message;
+            if (errorSpan) {
+                errorSpan.textContent = message;
+            }
             
+            // Подсвечиваем поле с ошибкой
             let input;
-            if (field === 'languages') input = form.querySelector('#languages');
-            else if (field === 'gender') input = form.querySelector('input[name="gender"]');
-            else input = form.querySelector(`[name="${field}"]`);
+            if (field === 'dishes') {
+                input = form.querySelector('#dishes');
+            } else if (field === 'gender') {
+                input = form.querySelector('input[name="gender"]');
+            } else {
+                input = form.querySelector(`[name="${field}"]`);
+            }
             
-            if (input) input.classList.add('error');
+            if (input) {
+                input.classList.add('error');
+            }
         }
     }
     
+    // Отображение ответа от сервера
     function showResponse(message, type = 'success') {
         if (!responseDiv) return;
+        
         responseDiv.innerHTML = message;
         responseDiv.className = `form-response ${type}`;
         responseDiv.style.display = 'block';
-        responseDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Прокручиваем к сообщению
+        responseDiv.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+        });
     }
     
+    // Экранирование HTML
     function escapeHtml(str) {
         if (!str) return '';
         return String(str)
@@ -91,6 +128,7 @@ function initBookingForm() {
             .replace(/'/g, '&#039;');
     }
     
+    // Клиентская валидация (до отправки на сервер)
     function clientValidate() {
         const errors = {};
         
@@ -99,59 +137,101 @@ function initBookingForm() {
         const email = form.querySelector('#email')?.value.trim() || '';
         const birthDate = form.querySelector('#birth_date')?.value || '';
         const gender = form.querySelector('input[name="gender"]:checked')?.value || '';
-        const languages = form.querySelector('#languages')?.selectedOptions || [];
+        const dishes = form.querySelector('#dishes')?.selectedOptions || [];
         const agreed = form.querySelector('input[name="agreed"]:checked')?.value || '';
         
-        if (!fullName) errors.full_name = 'ФИО обязательно для заполнения';
-        else if (fullName.length > 150) errors.full_name = 'ФИО не должно превышать 150 символов';
-        else if (!/^[a-zA-Zа-яА-ЯёЁ\s\-]+$/u.test(fullName)) errors.full_name = 'ФИО должно содержать только буквы, пробелы и дефисы';
+        // Валидация ФИО
+        if (!fullName) {
+            errors.full_name = 'ФИО обязательно для заполнения';
+        } else if (fullName.length > 150) {
+            errors.full_name = 'ФИО не должно превышать 150 символов';
+        } else if (!/^[a-zA-Zа-яА-ЯёЁ\s\-]+$/u.test(fullName)) {
+            errors.full_name = 'ФИО должно содержать только буквы, пробелы и дефисы';
+        }
         
-        if (!phone) errors.phone = 'Телефон обязателен для заполнения';
-        else if (!/^[\d\s\+\(\)-]{5,20}$/.test(phone)) errors.phone = 'Телефон должен содержать только цифры, пробелы, +, (, ), - (5-20 символов)';
+        // Валидация телефона
+        if (!phone) {
+            errors.phone = 'Телефон обязателен для заполнения';
+        } else if (!/^[\d\s\+\(\)-]{5,20}$/.test(phone)) {
+            errors.phone = 'Телефон должен содержать только цифры, пробелы, +, (, ), - (5-20 символов)';
+        }
         
-        if (!email) errors.email = 'Email обязателен для заполнения';
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Введите корректный email';
+        // Валидация email
+        if (!email) {
+            errors.email = 'Email обязателен для заполнения';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            errors.email = 'Введите корректный email (пример: name@domain.ru)';
+        }
         
-        if (!birthDate) errors.birth_date = 'Дата рождения обязательна для заполнения';
-        else if (new Date(birthDate) > new Date()) errors.birth_date = 'Дата рождения не может быть в будущем';
+        // Валидация даты рождения
+        if (!birthDate) {
+            errors.birth_date = 'Дата рождения обязательна для заполнения';
+        } else if (new Date(birthDate) > new Date()) {
+            errors.birth_date = 'Дата рождения не может быть в будущем';
+        }
         
-        if (!gender) errors.gender = 'Выберите пол';
+        // Валидация пола
+        if (!gender) {
+            errors.gender = 'Выберите пол';
+        }
         
-        if (languages.length === 0) errors.languages = 'Выберите хотя бы один язык программирования';
+        // Валидация выбранных блюд
+        if (dishes.length === 0) {
+            errors.dishes = 'Выберите хотя бы одно блюдо';
+        }
         
-        if (!agreed) errors.agreed = 'Вы должны согласиться с условиями';
+        // Валидация согласия
+        if (!agreed) {
+            errors.agreed = 'Вы должны согласиться с условиями бронирования';
+        }
         
         return errors;
     }
     
+    // Основной обработчик отправки формы
     form.addEventListener('submit', async function(e) {
+        // Если JavaScript включен - предотвращаем обычную отправку
         e.preventDefault();
         
+        // Очищаем предыдущие ошибки и ответ
         clearErrors();
-        if (responseDiv) responseDiv.style.display = 'none';
+        if (responseDiv) {
+            responseDiv.style.display = 'none';
+        }
         
+        // Клиентская валидация
         const clientErrors = clientValidate();
         if (Object.keys(clientErrors).length > 0) {
             showErrors(clientErrors);
+            // Прокручиваем к первой ошибке
+            const firstError = form.querySelector('.error');
+            if (firstError) {
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
             return;
         }
         
+        // Меняем состояние кнопки
         const originalHTML = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
         submitBtn.disabled = true;
         
+        // Собираем данные формы
         const formData = new FormData(form);
         const data = {};
         
         for (const [key, value] of formData.entries()) {
-            if (key === 'languages[]') {
-                if (!data.languages) data.languages = [];
-                data.languages.push(value);
+            if (key === 'dishes[]') {
+                if (!data.dishes) {
+                    data.dishes = [];
+                }
+                data.dishes.push(value);
             } else if (key !== 'csrf_token') {
                 data[key] = value;
             }
         }
         
+        // Определяем метод и URL
         const isLoggedIn = document.body.dataset.loggedIn === 'true';
         const userId = document.body.dataset.userId;
         
@@ -166,7 +246,9 @@ function initBookingForm() {
         try {
             const response = await fetch(url, {
                 method: method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(data)
             });
             
@@ -174,35 +256,60 @@ function initBookingForm() {
             
             if (response.ok) {
                 if (result.login && result.password) {
+                    // Новое бронирование - показываем логин и пароль
                     showResponse(
                         `<h4><i class="fas fa-check-circle"></i> Бронирование подтверждено!</h4>
                          <p><strong>🔑 Логин:</strong> <code>${escapeHtml(result.login)}</code></p>
                          <p><strong>🔒 Пароль:</strong> <code>${escapeHtml(result.password)}</code></p>
-                         <p class="warning"><i class="fas fa-exclamation-triangle"></i> Сохраните эти данные!</p>
+                         <p class="warning"><i class="fas fa-exclamation-triangle"></i> Сохраните эти данные! Они понадобятся для изменения брони.</p>
                          <p><a href="login.php" class="btn btn-sm btn-primary">Войти для редактирования</a></p>`,
                         'success'
                     );
+                    // Очищаем форму после успешной отправки
                     form.reset();
                 } else {
-                    showResponse('<h4><i class="fas fa-check-circle"></i> Данные успешно обновлены!</h4>', 'success');
+                    showResponse(
+                        '<h4><i class="fas fa-check-circle"></i> Данные успешно обновлены!</h4>',
+                        'success'
+                    );
                 }
             } else if (response.status === 400 && result.errors) {
+                // Ошибки валидации с сервера
                 showErrors(result.errors);
-                showResponse('<i class="fas fa-exclamation-circle"></i> Пожалуйста, исправьте ошибки в форме', 'error');
+                showResponse(
+                    '<i class="fas fa-exclamation-circle"></i> Пожалуйста, исправьте ошибки в форме',
+                    'error'
+                );
             } else if (response.status === 401) {
-                showResponse('<i class="fas fa-lock"></i> Необходима авторизация. <a href="login.php">Войти</a>', 'error');
+                showResponse(
+                    '<i class="fas fa-lock"></i> Необходима авторизация. <a href="login.php">Войти</a>',
+                    'error'
+                );
+            } else if (response.status === 404) {
+                showResponse(
+                    '<i class="fas fa-info-circle"></i> Данные не найдены. Заполните форму заново.',
+                    'error'
+                );
             } else {
-                showResponse(`<i class="fas fa-times-circle"></i> Ошибка: ${escapeHtml(result.error || 'Неизвестная ошибка')}`, 'error');
+                showResponse(
+                    `<i class="fas fa-times-circle"></i> Ошибка: ${escapeHtml(result.error || 'Неизвестная ошибка сервера')}`,
+                    'error'
+                );
             }
         } catch (error) {
-            showResponse(`<i class="fas fa-times-circle"></i> Ошибка сети: ${escapeHtml(error.message)}`, 'error');
+            showResponse(
+                `<i class="fas fa-times-circle"></i> Ошибка сети: ${escapeHtml(error.message)}<br>
+                 <small>Проверьте подключение к интернету и попробуйте снова</small>`,
+                'error'
+            );
         } finally {
+            // Восстанавливаем кнопку
             submitBtn.innerHTML = originalHTML;
             submitBtn.disabled = false;
         }
     });
     
-    // Загрузка данных пользователя
+    // Загрузка данных пользователя при авторизации
     async function loadUserData() {
         const isLoggedIn = document.body.dataset.loggedIn === 'true';
         const userId = document.body.dataset.userId;
@@ -215,40 +322,51 @@ function initBookingForm() {
             if (response.ok) {
                 const data = await response.json();
                 
-                if (data.full_name) form.querySelector('#full_name').value = data.full_name;
-                if (data.phone) form.querySelector('#phone').value = data.phone;
-                if (data.email) form.querySelector('#email').value = data.email;
-                if (data.birth_date) form.querySelector('#birth_date').value = data.birth_date;
-                
+                // Заполняем поля формы
+                if (data.full_name) {
+                    form.querySelector('#full_name').value = data.full_name;
+                }
+                if (data.phone) {
+                    form.querySelector('#phone').value = data.phone;
+                }
+                if (data.email) {
+                    form.querySelector('#email').value = data.email;
+                }
+                if (data.birth_date) {
+                    form.querySelector('#birth_date').value = data.birth_date;
+                }
                 if (data.gender) {
                     const radio = form.querySelector(`input[name="gender"][value="${data.gender}"]`);
                     if (radio) radio.checked = true;
                 }
-                
-                if (data.languages && Array.isArray(data.languages)) {
-                    const select = form.querySelector('#languages');
+                if (data.dishes && Array.isArray(data.dishes)) {
+                    const select = form.querySelector('#dishes');
                     if (select) {
                         for (const option of select.options) {
-                            option.selected = data.languages.includes(option.value);
+                            option.selected = data.dishes.includes(option.value);
                         }
                     }
                 }
-                
-                if (data.biography) form.querySelector('#biography').value = data.biography;
-                
+                if (data.biography) {
+                    form.querySelector('#biography').value = data.biography;
+                }
                 if (data.agreed) {
                     const checkbox = form.querySelector('input[name="agreed"]');
                     if (checkbox) checkbox.checked = true;
                 }
                 
+                // Меняем текст кнопки для авторизованных пользователей
                 if (submitBtn) {
                     submitBtn.innerHTML = '<i class="fas fa-save"></i> Обновить бронирование';
                 }
+            } else if (response.status === 404) {
+                console.log('Данные не найдены, форма будет заполнена заново');
             }
         } catch (error) {
-            console.error('Ошибка загрузки данных:', error);
+            console.error('Ошибка загрузки данных пользователя:', error);
         }
     }
     
+    // Загружаем данные при инициализации
     loadUserData();
 }
