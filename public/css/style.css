@@ -242,20 +242,15 @@ a:hover {
     height: 90vh;
     min-height: 600px;
     background: linear-gradient(135deg, rgba(26,26,26,0.7), rgba(198,40,40,0.5)),
-                url('../images/hero-bg.jpg') center/cover no-repeat;
+                url('../../images/hero-bg.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--white);
     position: relative;
+    background-color: #1a1a1a; /* Заглушка если фото нет */
 }
-
-/* Если фото нет - градиентная заглушка */
-.hero {
-    background-color: #1a1a1a;
-}
-
 .hero-overlay {
     position: absolute;
     top: 0;
