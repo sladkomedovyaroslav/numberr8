@@ -210,7 +210,7 @@ echo renderHeader('Бронирование столика');
 ?>
 
 <!-- HERO -->
-<header class="hero">
+<header class="hero" style="background-image: url('public/images/hero-bg.jpg');">
     <div class="hero-content">
         <h1>Ресторан «Вкус Востока»</h1>
         <p class="hero-subtitle">Авторская кухня с восточным колоритом</p>
