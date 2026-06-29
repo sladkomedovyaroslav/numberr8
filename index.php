@@ -162,7 +162,7 @@ echo $headerHtml;
                 </div>
             </div>
             <div class="about-image">
-                <img src="/restaurant/public/images/interior.jpg" alt="Интерьер ресторана">
+                <img src="public/images/interior.jpg" alt="Интерьер ресторана">
             </div>
         </div>
     </div>
