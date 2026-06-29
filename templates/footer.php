@@ -37,7 +37,7 @@
         window.VALIDATION_RULES = <?= json_encode(Validator::getRulesForClient()) ?>;
         window.API_BASE_URL = '/restaurant/api';
     </script>
-    <script src="/restaurant/public/js/main.js"></script>
+    <script src="public/js/main.js"></script>
     <noscript>
         <!-- Сообщение для пользователей с отключенным JS -->
         <div class="noscript-notice">
