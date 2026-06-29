@@ -235,16 +235,107 @@ echo renderHeader('Бронирование столика');
     </div>
 </section>
 
+<!-- МЕНЮ С ФОТО -->
 <section class="section section-dark" id="menu">
     <div class="container">
         <h2 class="section-title">Наше меню</h2>
+        <p class="section-description">Лучшие блюда восточной кухни от нашего шеф-повара</p>
         <div class="menu-grid">
-            <?php foreach (Validator::getAllowedDishes() as $dish): ?>
+            <!-- Плов -->
             <div class="menu-item">
-                <i class="fas fa-utensils menu-icon"></i>
-                <h3><?= htmlspecialchars($dish) ?></h3>
+                <div class="menu-photo-placeholder">🍚</div>
+                <div class="menu-icon"></div>
+                <h3>Плов узбекский</h3>
+                <p>Ароматный плов с бараниной, морковью и специями</p>
             </div>
-            <?php endforeach; ?>
+            
+            <!-- Лагман -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🍜</div>
+                <div class="menu-icon"></div>
+                <h3>Лагман</h3>
+                <p>Домашняя лапша с мясом и овощами в пряном бульоне</p>
+            </div>
+            
+            <!-- Манты -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🥟</div>
+                <div class="menu-icon"></div>
+                <h3>Манты</h3>
+                <p>Нежные манты с сочной бараниной и луком</p>
+            </div>
+            
+            <!-- Шашлык -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🥩</div>
+                <div class="menu-icon"></div>
+                <h3>Шашлык из баранины</h3>
+                <p>Маринованная баранина на углях с гранатовым соусом</p>
+            </div>
+            
+            <!-- Люля-кебаб -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🍢</div>
+                <div class="menu-icon"></div>
+                <h3>Люля-кебаб</h3>
+                <p>Рубленое мясо на шпажках с зеленью и специями</p>
+            </div>
+            
+            <!-- Шурпа -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🥣</div>
+                <div class="menu-icon"></div>
+                <h3>Шурпа</h3>
+                <p>Наваристый суп с бараниной и овощами</p>
+            </div>
+            
+            <!-- Долма -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🌯</div>
+                <div class="menu-icon"></div>
+                <h3>Долма</h3>
+                <p>Виноградные листья с мясом и рисом</p>
+            </div>
+            
+            <!-- Самса -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🥐</div>
+                <div class="menu-icon"></div>
+                <h3>Самса</h3>
+                <p>Слоёное тесто с мясной начинкой из тандыра</p>
+            </div>
+            
+            <!-- Чебуреки -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🥮</div>
+                <div class="menu-icon"></div>
+                <h3>Чебуреки</h3>
+                <p>Хрустящие чебуреки с сыром и зеленью</p>
+            </div>
+            
+            <!-- Пахлава -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🍯</div>
+                <div class="menu-icon"></div>
+                <h3>Пахлава</h3>
+                <p>Медовая пахлава с орехами и фисташками</p>
+            </div>
+            
+            <!-- Чак-чак -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🍪</div>
+                <div class="menu-icon"></div>
+                <h3>Чак-чак</h3>
+                <p>Обжаренное тесто с медовым сиропом</p>
+            </div>
+            
+            <!-- Чай -->
+            <div class="menu-item">
+                <div class="menu-photo-placeholder">🍵</div>
+                <div class="menu-icon"></div>
+                <h3>Чай зелёный</h3>
+                <p>Ароматный зелёный чай с восточными сладостями</p>
+            </div>
         </div>
     </div>
 </section>
