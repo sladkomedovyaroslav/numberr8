@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// Если уже авторизован - редирект на главную
 if (isset($_SESSION['login'])) {
-    header('Location: /restaurant/');
+    header('Location: index.php');
     exit;
 }
 
@@ -27,25 +26,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user && password_verify($password, $user['password_hash'])) {
                 $_SESSION['login'] = $user['login'];
                 $_SESSION['uid'] = $user['id'];
-                header('Location: /restaurant/');
+                header('Location: index.php');
                 exit;
             }
             
-            // Проверяем также старый формат md5 (если есть старые данные)
+            // Проверка старого формата md5
             if ($user && $user['password_hash'] === md5($password)) {
-                // Обновляем хеш на современный
                 $newHash = password_hash($password, PASSWORD_DEFAULT);
                 $stmt = $db->prepare("UPDATE users_auth SET password_hash = ? WHERE id = ?");
                 $stmt->execute([$newHash, $user['id']]);
                 
                 $_SESSION['login'] = $user['login'];
                 $_SESSION['uid'] = $user['id'];
-                header('Location: /restaurant/');
+                header('Location: index.php');
                 exit;
             }
             
             $error = 'Неверный логин или пароль';
-            
         } catch (Exception $e) {
             $error = 'Ошибка сервера. Попробуйте позже.';
         }
@@ -58,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход | Ресторан «Вкус Востока»</title>
-    <link rel="stylesheet" href="/restaurant/public/css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="login-page">
@@ -86,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
             
             <p class="login-link">
-                <a href="/restaurant/">← Вернуться на главную</a>
+                <a href="index.php">← Вернуться на главную</a>
             </p>
         </div>
     </div>

@@ -10,23 +10,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <noscript>
-        <style>
-            /* Стили для случая, когда JS отключен */
-            .js-only { display: none !important; }
-        </style>
+        <style>.js-only { display: none !important; }</style>
     </noscript>
 </head>
 <body data-logged-in="<?= isset($_SESSION['login']) ? 'true' : 'false' ?>" data-user-id="<?= htmlspecialchars($_SESSION['uid'] ?? '') ?>">
     <!-- Навигация -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="/restaurant/" class="logo">
+            <a href="index.php" class="logo">
                 <i class="fas fa-utensils"></i> Вкус Востока
             </a>
             <ul class="nav-menu">
                 <li><a href="#about">О ресторане</a></li>
                 <li><a href="#menu">Меню</a></li>
-                <li><a href="#gallery">Галерея</a></li>
                 <li><a href="#booking">Бронирование</a></li>
                 <li><a href="#contacts">Контакты</a></li>
             </ul>
@@ -43,15 +39,15 @@
                 <span class="auth-status">
                     ✅ Вы вошли как: <strong><?= htmlspecialchars($_SESSION['login']) ?></strong>
                 </span>
-                <a href="/restaurant/logout.php" class="btn btn-sm btn-outline">Выйти</a>
+                <a href="logout.php" class="btn btn-sm btn-outline">Выйти</a>
             <?php else: ?>
                 <span class="auth-status">🔐</span>
-                <a href="/restaurant/login.php" class="btn btn-sm btn-outline">Войти для изменения брони</a>
+                <a href="login.php" class="btn btn-sm btn-outline">Войти для изменения брони</a>
             <?php endif; ?>
         </div>
     </div>
 
-    <!-- Сообщения (куки) -->
+    <!-- Сообщения -->
     <?php if (!empty($_COOKIE['save_success'])): ?>
         <?php setcookie('save_success', '', time() - 3600, '/'); ?>
         <div class="message success">

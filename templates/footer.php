@@ -32,14 +32,8 @@
         </div>
     </footer>
 
-    <!-- Передаём правила валидации в JavaScript -->
-    <script>
-        window.VALIDATION_RULES = <?= json_encode(Validator::getRulesForClient()) ?>;
-        window.API_BASE_URL = '/restaurant/api';
-    </script>
     <script src="public/js/main.js"></script>
     <noscript>
-        <!-- Сообщение для пользователей с отключенным JS -->
         <div class="noscript-notice">
             <div class="container">
                 <i class="fas fa-info-circle"></i> JavaScript отключен. Форма работает в обычном режиме.

@@ -1,22 +1,19 @@
 <?php
 session_start();
 
-// Подключаем модули
 require_once 'includes/Database.php';
 require_once 'includes/Validator.php';
 require_once 'includes/Template.php';
 
 $template = new Template();
-
-// Обработка POST-запроса (когда JS отключен - фоллбек)
 $formData = [];
 $errors = [];
 $serverErrors = [];
 
+// Обработка POST (фоллбек без JS)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Проверка CSRF
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
-        $serverErrors[] = 'Ошибка безопасности. Пожалуйста, обновите страницу.';
+        $serverErrors[] = 'Ошибка безопасности. Обновите страницу.';
     } else {
         $formData = [
             'full_name' => trim($_POST['full_name'] ?? ''),
@@ -29,11 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'agreed' => $_POST['agreed'] ?? ''
         ];
         
-        // Валидация (те же правила, что и в API)
         $errors = Validator::validate($formData);
         
         if (empty($errors)) {
-            // Сохраняем через API (внутренний вызов)
             try {
                 $db = Database::getInstance();
                 
@@ -72,24 +67,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 $db->commit();
                 
-                // Устанавливаем куки с логином и паролем
                 setcookie('login', $login, time() + 3600, '/');
                 setcookie('pass', $password, time() + 3600, '/');
                 setcookie('save_success', '1', time() + 3600, '/');
                 
-                // Редирект для предотвращения повторной отправки
-                header('Location: /restaurant/');
+                header('Location: index.php');
                 exit;
                 
             } catch (Exception $e) {
                 $db->rollBack();
-                $serverErrors[] = 'Ошибка сохранения данных. Попробуйте позже.';
+                $serverErrors[] = 'Ошибка сохранения данных.';
             }
         }
     }
 }
 
-// Если пользователь авторизован, загружаем его данные
+// Загрузка данных авторизованного пользователя
 if (isset($_SESSION['login']) && isset($_SESSION['uid'])) {
     try {
         $db = Database::getInstance();
@@ -106,7 +99,6 @@ if (isset($_SESSION['login']) && isset($_SESSION['uid'])) {
             $stmtLang->execute([$userData['id']]);
             $userData['languages'] = $stmtLang->fetchAll(PDO::FETCH_COLUMN);
             
-            // Заполняем форму данными пользователя
             $formData = array_merge($formData ?: [], [
                 'full_name' => $userData['full_name'],
                 'phone' => $userData['phone'],
@@ -114,61 +106,57 @@ if (isset($_SESSION['login']) && isset($_SESSION['uid'])) {
                 'birth_date' => $userData['birth_date'],
                 'gender' => $userData['gender'],
                 'languages' => $userData['languages'],
-                'biography' => $userData['biography'],
+                'biography' => $userData['biography'] ?? '',
                 'agreed' => $userData['agreed'] ? '1' : ''
             ]);
         }
-    } catch (Exception $e) {
-        // Игнорируем ошибку загрузки данных
-    }
+    } catch (Exception $e) {}
 }
 
-// Рендерим страницу
-$headerHtml = $template->render('header', [
-    'pageTitle' => 'Бронирование столика'
-]);
+// Генерируем CSRF токен
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
-$footerHtml = $template->render('footer');
-
-// Выводим всё
-echo $headerHtml;
+// Рендерим шапку
+echo $template->render('header', ['pageTitle' => 'Бронирование столика']);
 ?>
 
-<!-- Hero секция -->
+<!-- HERO -->
 <header class="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1>Ресторан «Вкус Востока»</h1>
         <p class="hero-subtitle">Авторская кухня с восточным колоритом</p>
-        <p class="hero-description">Погрузитесь в атмосферу восточной сказки и насладитесь изысканными блюдами от шеф-повара</p>
+        <p class="hero-description">Погрузитесь в атмосферу восточной сказки и насладитесь изысканными блюдами</p>
         <a href="#booking" class="btn btn-primary btn-lg">
             <i class="fas fa-calendar-alt"></i> Забронировать столик
         </a>
     </div>
 </header>
 
-<!-- О ресторане -->
+<!-- О РЕСТОРАНЕ -->
 <section class="section" id="about">
     <div class="container">
         <h2 class="section-title">О нашем ресторане</h2>
         <div class="about-grid">
             <div class="about-text">
                 <p>«Вкус Востока» — это больше, чем ресторан. Это путешествие в мир восточной гастрономии, где каждое блюдо — произведение искусства.</p>
-                <p>Наш шеф-повар обучался у лучших мастеров восточной кухни и привёз уникальные рецепты, которые вы не найдёте больше нигде в городе.</p>
+                <p>Наш шеф-повар обучался у лучших мастеров восточной кухни и привёз уникальные рецепты.</p>
                 <div class="stats">
-                    <div class="stat"><span>150+</span> блюд в меню</div>
-                    <div class="stat"><span>8</span> лет работы</div>
-                    <div class="stat"><span>4.8</span> рейтинг</div>
+                    <div class="stat"><span>150+</span><p>блюд в меню</p></div>
+                    <div class="stat"><span>8</span><p>лет работы</p></div>
+                    <div class="stat"><span>4.8</span><p>рейтинг</p></div>
                 </div>
             </div>
             <div class="about-image">
-                <img src="public/images/interior.jpg" alt="Интерьер ресторана">
+                <i class="fas fa-utensils"></i>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Меню -->
+<!-- МЕНЮ -->
 <section class="section section-dark" id="menu">
     <div class="container">
         <h2 class="section-title">Наше меню</h2>
@@ -197,7 +185,7 @@ echo $headerHtml;
     </div>
 </section>
 
-<!-- Форма бронирования -->
+<!-- ФОРМА БРОНИРОВАНИЯ -->
 <section class="section" id="booking">
     <div class="container">
         <h2 class="section-title">Бронирование столика</h2>
@@ -234,11 +222,109 @@ echo $headerHtml;
                 </ul>
             </div>
             <div class="booking-form-container">
-                <?php $template->render('form', ['formData' => $formData]); ?>
+                <form id="booking-form" action="index.php" method="POST" novalidate>
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
+                    
+                    <div class="form-grid">
+                        <!-- ФИО -->
+                        <div class="form-group">
+                            <label for="full_name">ФИО *</label>
+                            <input type="text" id="full_name" name="full_name" 
+                                   value="<?= htmlspecialchars($formData['full_name'] ?? '') ?>"
+                                   placeholder="Иванов Иван Иванович" required maxlength="150">
+                            <span class="error-message" data-error="full_name"></span>
+                        </div>
+                        
+                        <!-- Телефон -->
+                        <div class="form-group">
+                            <label for="phone">Телефон *</label>
+                            <input type="tel" id="phone" name="phone"
+                                   value="<?= htmlspecialchars($formData['phone'] ?? '') ?>"
+                                   placeholder="+7 (999) 123-45-67" required>
+                            <span class="error-message" data-error="phone"></span>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email"
+                                   value="<?= htmlspecialchars($formData['email'] ?? '') ?>"
+                                   placeholder="example@mail.ru" required>
+                            <span class="error-message" data-error="email"></span>
+                        </div>
+                        
+                        <!-- Дата рождения -->
+                        <div class="form-group">
+                            <label for="birth_date">Дата рождения *</label>
+                            <input type="date" id="birth_date" name="birth_date"
+                                   value="<?= htmlspecialchars($formData['birth_date'] ?? '') ?>"
+                                   max="<?= date('Y-m-d') ?>" required>
+                            <span class="error-message" data-error="birth_date"></span>
+                        </div>
+                        
+                        <!-- Пол -->
+                        <div class="form-group">
+                            <label>Пол *</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="male" 
+                                           <?= ($formData['gender'] ?? '') === 'male' ? 'checked' : '' ?> required>
+                                    Мужской
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="female"
+                                           <?= ($formData['gender'] ?? '') === 'female' ? 'checked' : '' ?>>
+                                    Женский
+                                </label>
+                            </div>
+                            <span class="error-message" data-error="gender"></span>
+                        </div>
+                        
+                        <!-- Любимые языки -->
+                        <div class="form-group full-width">
+                            <label for="languages">Любимые языки программирования *</label>
+                            <select id="languages" name="languages[]" multiple required size="6">
+                                <?php 
+                                $languages = ['Pascal', 'C', 'C++', 'JavaScript', 'PHP', 'Python', 'Java', 'Haskell', 'Clojure', 'Prolog', 'Scala', 'Go'];
+                                foreach ($languages as $lang):
+                                    $selected = in_array($lang, $formData['languages'] ?? []) ? 'selected' : '';
+                                ?>
+                                    <option value="<?= $lang ?>" <?= $selected ?>><?= $lang ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <small>Удерживайте Ctrl/Cmd для выбора нескольких</small>
+                            <span class="error-message" data-error="languages"></span>
+                        </div>
+                        
+                        <!-- О себе -->
+                        <div class="form-group full-width">
+                            <label for="biography">О себе</label>
+                            <textarea id="biography" name="biography" rows="4"
+                                      placeholder="Расскажите о вашем опыте..."><?= htmlspecialchars($formData['biography'] ?? '') ?></textarea>
+                        </div>
+                        
+                        <!-- Согласие -->
+                        <div class="form-group full-width">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="agreed" value="1"
+                                       <?= !empty($formData['agreed']) ? 'checked' : '' ?> required>
+                                Я согласен с условиями бронирования *
+                            </label>
+                            <span class="error-message" data-error="agreed"></span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                        <i class="fas fa-calendar-check"></i> Забронировать столик
+                    </button>
+                    
+                    <div id="form-response" class="form-response" style="display:none;"></div>
+                </form>
             </div>
         </div>
     </div>
 </section>
 
 <?php
-echo $footerHtml;
+echo $template->render('footer');
+?>
