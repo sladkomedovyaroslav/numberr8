@@ -178,11 +178,6 @@ a:hover {
     font-size: 14px;
 }
 
-.auth-bar .btn-outline {
-    padding: 6px 15px;
-    font-size: 14px;
-}
-
 /* ============================================
    КНОПКИ
    ============================================ */
@@ -246,7 +241,7 @@ a:hover {
 .hero {
     height: 90vh;
     min-height: 600px;
-    background: linear-gradient(135deg, rgba(26,26,26,0.8), rgba(198,40,40,0.6)),
+    background: linear-gradient(135deg, rgba(26,26,26,0.7), rgba(198,40,40,0.5)),
                 url('../images/hero-bg.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
@@ -256,9 +251,9 @@ a:hover {
     position: relative;
 }
 
-/* Если нет изображения - используем градиент */
+/* Если фото нет - градиентная заглушка */
 .hero {
-    background: linear-gradient(135deg, #1a1a1a 0%, #c62828 50%, #8e0000 100%);
+    background-color: #1a1a1a;
 }
 
 .hero-overlay {
@@ -364,6 +359,7 @@ a:hover {
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--shadow);
+    min-height: 400px;
 }
 
 .about-image img {
@@ -371,17 +367,6 @@ a:hover {
     height: 400px;
     object-fit: cover;
     display: block;
-}
-
-/* Если нет изображения - используем заглушку */
-.about-image {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 100px;
-    color: rgba(255,255,255,0.3);
 }
 
 .stats {
@@ -420,35 +405,36 @@ a:hover {
 }
 
 .menu-item {
-    text-align: center;
-    padding: 50px 30px;
     background: rgba(255,255,255,0.05);
     border-radius: var(--border-radius);
+    overflow: hidden;
     transition: var(--transition);
     border: 1px solid rgba(255,255,255,0.1);
 }
 
 .menu-item:hover {
-    background: rgba(255,255,255,0.1);
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.1);
 }
 
-.menu-icon {
-    font-size: 56px;
-    color: var(--gold);
-    margin-bottom: 25px;
+.menu-photo {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
 }
 
 .menu-item h3 {
     color: var(--gold);
-    margin-bottom: 15px;
-    font-size: 22px;
+    padding: 15px 20px 5px;
+    font-size: 18px;
 }
 
 .menu-item p {
     color: rgba(255,255,255,0.7);
-    font-size: 15px;
+    padding: 0 20px 20px;
+    font-size: 14px;
     line-height: 1.6;
 }
 
@@ -502,10 +488,6 @@ a:hover {
     padding: 50px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-}
-
-.booking-form-container h2 {
-    margin-bottom: 10px;
 }
 
 /* ============================================
@@ -903,7 +885,7 @@ a:hover {
 
 @media (max-width: 1024px) {
     .menu-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
     
     .footer-grid {
@@ -947,6 +929,10 @@ a:hover {
         min-height: 300px;
     }
     
+    .about-image img {
+        height: 300px;
+    }
+    
     .booking-container {
         grid-template-columns: 1fr;
     }
@@ -961,6 +947,10 @@ a:hover {
     
     .booking-form-container {
         padding: 30px 25px;
+    }
+    
+    .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
     
     .footer-grid {
@@ -1053,7 +1043,7 @@ a:hover {
 }
 
 /* ============================================
-   FA SPINNER (для загрузки)
+   FA SPINNER
    ============================================ */
 
 .fa-spinner {
@@ -1066,7 +1056,7 @@ a:hover {
 }
 
 /* ============================================
-   УЛУЧШЕНИЯ ДЛЯ ПЕЧАТИ
+   ПЕЧАТЬ
    ============================================ */
 
 @media print {
@@ -1086,192 +1076,4 @@ a:hover {
         height: auto;
         padding: 40px 0;
     }
-}
-
-/* ============================================
-   ЗАГЛУШКИ ДЛЯ ИЗОБРАЖЕНИЙ
-   ============================================ */
-
-/* Hero-секция с градиентом вместо фото */
-.hero {
-    background: linear-gradient(135deg, 
-        rgba(26, 26, 26, 0.9) 0%, 
-        rgba(198, 40, 40, 0.8) 50%, 
-        rgba(139, 0, 0, 0.9) 100%),
-        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" x="50" text-anchor="middle" font-size="40">🍽️</text></svg>');
-    background-size: cover;
-    background-position: center;
-    position: relative;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
-}
-
-/* About-секция с иконкой вместо фото */
-.about-image {
-    background: linear-gradient(135deg, #c62828 0%, #8e0000 100%);
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--border-radius);
-    position: relative;
-    overflow: hidden;
-}
-
-.about-image::before {
-    content: '🍽️';
-    font-size: 120px;
-    position: absolute;
-    animation: float 3s ease-in-out infinite;
-}
-
-.about-image::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, rgba(212, 168, 83, 0.3) 0%, transparent 50%);
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
-
-/* Карточки меню с эмодзи блюд */
-.menu-item {
-    position: relative;
-    overflow: hidden;
-}
-
-.menu-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.1;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-}
-
-.menu-item:hover::before {
-    opacity: 0.2;
-}
-
-/* Фон для каждой карточки меню */
-.menu-item:nth-child(1)::before {
-    background: linear-gradient(135deg, #ff6b6b, #c62828);
-}
-.menu-item:nth-child(2)::before {
-    background: linear-gradient(135deg, #ffa500, #ff8c00);
-}
-.menu-item:nth-child(3)::before {
-    background: linear-gradient(135deg, #8b4513, #654321);
-}
-.menu-item:nth-child(4)::before {
-    background: linear-gradient(135deg, #ffd700, #daa520);
-}
-.menu-item:nth-child(5)::before {
-    background: linear-gradient(135deg, #dc143c, #8b0000);
-}
-.menu-item:nth-child(6)::before {
-    background: linear-gradient(135deg, #f4a460, #d2691e);
-}
-.menu-item:nth-child(7)::before {
-    background: linear-gradient(135deg, #228b22, #006400);
-}
-.menu-item:nth-child(8)::before {
-    background: linear-gradient(135deg, #deb887, #d2b48c);
-}
-.menu-item:nth-child(9)::before {
-    background: linear-gradient(135deg, #cd853f, #8b4513);
-}
-.menu-item:nth-child(10)::before {
-    background: linear-gradient(135deg, #d4a853, #b8860b);
-}
-.menu-item:nth-child(11)::before {
-    background: linear-gradient(135deg, #ff69b4, #ff1493);
-}
-.menu-item:nth-child(12)::before {
-    background: linear-gradient(135deg, #90ee90, #3cb371);
-}
-
-/* Иконки блюд с эмодзи */
-.menu-icon {
-    position: relative;
-    z-index: 1;
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
-    background: rgba(212, 168, 83, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-}
-
-/* Подписи вместо иконок Font Awesome */
-.menu-item:nth-child(1) .menu-icon::before { content: '🍚'; }
-.menu-item:nth-child(2) .menu-icon::before { content: '🍜'; }
-.menu-item:nth-child(3) .menu-icon::before { content: '🥟'; }
-.menu-item:nth-child(4) .menu-icon::before { content: '🥩'; }
-.menu-item:nth-child(5) .menu-icon::before { content: '🍢'; }
-.menu-item:nth-child(6) .menu-icon::before { content: '🥣'; }
-.menu-item:nth-child(7) .menu-icon::before { content: '🌯'; }
-.menu-item:nth-child(8) .menu-icon::before { content: '🥐'; }
-.menu-item:nth-child(9) .menu-icon::before { content: '🥮'; }
-.menu-item:nth-child(10) .menu-icon::before { content: '🍯'; }
-.menu-item:nth-child(11) .menu-icon::before { content: '🍪'; }
-.menu-item:nth-child(12) .menu-icon::before { content: '🍵'; }
-
-/* Убираем стандартную иконку */
-.menu-item .menu-icon i {
-    display: none;
-}
-
-.menu-item h3, 
-.menu-item p {
-    position: relative;
-    z-index: 1;
-}
-
-/* Фото блюд в карточках меню */
-.menu-photo {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    position: relative;
-    z-index: 1;
-}
-
-/* Заглушка для фото если не загружено */
-.menu-photo-placeholder {
-    width: 100%;
-    height: 180px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 8px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    position: relative;
-    z-index: 1;
 }

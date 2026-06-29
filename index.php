@@ -115,7 +115,7 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Простая шаблонизация
+// Функции шаблонизации
 function renderHeader($title) {
     $loggedIn = isset($_SESSION['login']) ? 'true' : 'false';
     $uid = $_SESSION['uid'] ?? '';
@@ -209,28 +209,36 @@ function renderFooter() {
 echo renderHeader('Бронирование столика');
 ?>
 
+<!-- HERO -->
 <header class="hero">
+    <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1>Ресторан «Вкус Востока»</h1>
         <p class="hero-subtitle">Авторская кухня с восточным колоритом</p>
-        <p class="hero-description">Погрузитесь в атмосферу восточной сказки</p>
-        <a href="#booking" class="btn btn-primary btn-lg">Забронировать столик</a>
+        <p class="hero-description">Погрузитесь в атмосферу восточной сказки и насладитесь изысканными блюдами</p>
+        <a href="#booking" class="btn btn-primary btn-lg">
+            <i class="fas fa-calendar-alt"></i> Забронировать столик
+        </a>
     </div>
 </header>
 
+<!-- О РЕСТОРАНЕ -->
 <section class="section" id="about">
     <div class="container">
         <h2 class="section-title">О нашем ресторане</h2>
         <div class="about-grid">
             <div class="about-text">
                 <p>«Вкус Востока» — путешествие в мир восточной гастрономии, где каждое блюдо — произведение искусства.</p>
+                <p>Наш шеф-повар обучался у лучших мастеров восточной кухни и привёз уникальные рецепты.</p>
                 <div class="stats">
-                    <div class="stat"><span>150+</span><p>блюд</p></div>
-                    <div class="stat"><span>8</span><p>лет</p></div>
+                    <div class="stat"><span>150+</span><p>блюд в меню</p></div>
+                    <div class="stat"><span>8</span><p>лет работы</p></div>
                     <div class="stat"><span>4.8</span><p>рейтинг</p></div>
                 </div>
             </div>
-            <div class="about-image"><i class="fas fa-utensils"></i></div>
+            <div class="about-image">
+                <img src="public/images/interior.jpg" alt="Интерьер ресторана">
+            </div>
         </div>
     </div>
 </section>
@@ -241,98 +249,74 @@ echo renderHeader('Бронирование столика');
         <h2 class="section-title">Наше меню</h2>
         <p class="section-description">Лучшие блюда восточной кухни от нашего шеф-повара</p>
         <div class="menu-grid">
-            <!-- Плов -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🍚</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/plov.jpg" alt="Плов узбекский" class="menu-photo">
                 <h3>Плов узбекский</h3>
                 <p>Ароматный плов с бараниной, морковью и специями</p>
             </div>
             
-            <!-- Лагман -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🍜</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/lagman.jpg" alt="Лагман" class="menu-photo">
                 <h3>Лагман</h3>
                 <p>Домашняя лапша с мясом и овощами в пряном бульоне</p>
             </div>
             
-            <!-- Манты -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🥟</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/manty.jpg" alt="Манты" class="menu-photo">
                 <h3>Манты</h3>
                 <p>Нежные манты с сочной бараниной и луком</p>
             </div>
             
-            <!-- Шашлык -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🥩</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/shashlyk.jpg" alt="Шашлык из баранины" class="menu-photo">
                 <h3>Шашлык из баранины</h3>
                 <p>Маринованная баранина на углях с гранатовым соусом</p>
             </div>
             
-            <!-- Люля-кебаб -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🍢</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/lulya.jpg" alt="Люля-кебаб" class="menu-photo">
                 <h3>Люля-кебаб</h3>
                 <p>Рубленое мясо на шпажках с зеленью и специями</p>
             </div>
             
-            <!-- Шурпа -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🥣</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/shurpa.jpg" alt="Шурпа" class="menu-photo">
                 <h3>Шурпа</h3>
                 <p>Наваристый суп с бараниной и овощами</p>
             </div>
             
-            <!-- Долма -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🌯</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/dolma.jpg" alt="Долма" class="menu-photo">
                 <h3>Долма</h3>
                 <p>Виноградные листья с мясом и рисом</p>
             </div>
             
-            <!-- Самса -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🥐</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/samsa.jpg" alt="Самса" class="menu-photo">
                 <h3>Самса</h3>
                 <p>Слоёное тесто с мясной начинкой из тандыра</p>
             </div>
             
-            <!-- Чебуреки -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🥮</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/cheburek.jpg" alt="Чебуреки" class="menu-photo">
                 <h3>Чебуреки</h3>
                 <p>Хрустящие чебуреки с сыром и зеленью</p>
             </div>
             
-            <!-- Пахлава -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🍯</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/pahlava.jpg" alt="Пахлава" class="menu-photo">
                 <h3>Пахлава</h3>
                 <p>Медовая пахлава с орехами и фисташками</p>
             </div>
             
-            <!-- Чак-чак -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🍪</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/chakchak.jpg" alt="Чак-чак" class="menu-photo">
                 <h3>Чак-чак</h3>
                 <p>Обжаренное тесто с медовым сиропом</p>
             </div>
             
-            <!-- Чай -->
             <div class="menu-item">
-                <div class="menu-photo-placeholder">🍵</div>
-                <div class="menu-icon"></div>
+                <img src="public/images/dishes/tea.jpg" alt="Чай зелёный" class="menu-photo">
                 <h3>Чай зелёный</h3>
                 <p>Ароматный зелёный чай с восточными сладостями</p>
             </div>
@@ -340,9 +324,11 @@ echo renderHeader('Бронирование столика');
     </div>
 </section>
 
+<!-- ФОРМА БРОНИРОВАНИЯ -->
 <section class="section" id="booking">
     <div class="container">
         <h2 class="section-title">Бронирование столика</h2>
+        <p class="section-description">Заполните форму, и мы забронируем для вас лучший столик</p>
         
         <?php if (!empty($serverErrors)): ?>
             <div class="message error"><?= htmlspecialchars(implode(', ', $serverErrors)) ?></div>
@@ -359,10 +345,11 @@ echo renderHeader('Бронирование столика');
             <div class="booking-info">
                 <h3>Почему мы?</h3>
                 <ul class="features-list">
-                    <li><i class="fas fa-check"></i> Живая музыка</li>
-                    <li><i class="fas fa-check"></i> Детская комната</li>
-                    <li><i class="fas fa-check"></i> Парковка</li>
-                    <li><i class="fas fa-check"></i> Скидка 10% в ДР</li>
+                    <li><i class="fas fa-check"></i> Живая музыка каждый вечер</li>
+                    <li><i class="fas fa-check"></i> Детская комната с аниматором</li>
+                    <li><i class="fas fa-check"></i> Бесплатная парковка</li>
+                    <li><i class="fas fa-check"></i> Проведение банкетов</li>
+                    <li><i class="fas fa-check"></i> Скидка 10% в день рождения</li>
                 </ul>
             </div>
             <div class="booking-form-container">
@@ -372,33 +359,49 @@ echo renderHeader('Бронирование столика');
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="full_name">ФИО *</label>
-                            <input type="text" id="full_name" name="full_name" value="<?= htmlspecialchars($formData['full_name'] ?? '') ?>" required>
+                            <input type="text" id="full_name" name="full_name" 
+                                   value="<?= htmlspecialchars($formData['full_name'] ?? '') ?>"
+                                   placeholder="Иванов Иван Иванович" required>
                             <span class="error-message" data-error="full_name"></span>
                         </div>
                         
                         <div class="form-group">
                             <label for="phone">Телефон *</label>
-                            <input type="tel" id="phone" name="phone" value="<?= htmlspecialchars($formData['phone'] ?? '') ?>" required>
+                            <input type="tel" id="phone" name="phone"
+                                   value="<?= htmlspecialchars($formData['phone'] ?? '') ?>"
+                                   placeholder="+7 (999) 123-45-67" required>
                             <span class="error-message" data-error="phone"></span>
                         </div>
                         
                         <div class="form-group">
                             <label for="email">Email *</label>
-                            <input type="email" id="email" name="email" value="<?= htmlspecialchars($formData['email'] ?? '') ?>" required>
+                            <input type="email" id="email" name="email"
+                                   value="<?= htmlspecialchars($formData['email'] ?? '') ?>"
+                                   placeholder="example@mail.ru" required>
                             <span class="error-message" data-error="email"></span>
                         </div>
                         
                         <div class="form-group">
                             <label for="birth_date">Дата рождения *</label>
-                            <input type="date" id="birth_date" name="birth_date" value="<?= htmlspecialchars($formData['birth_date'] ?? '') ?>" max="<?= date('Y-m-d') ?>" required>
+                            <input type="date" id="birth_date" name="birth_date"
+                                   value="<?= htmlspecialchars($formData['birth_date'] ?? '') ?>"
+                                   max="<?= date('Y-m-d') ?>" required>
                             <span class="error-message" data-error="birth_date"></span>
                         </div>
                         
                         <div class="form-group">
                             <label>Пол *</label>
                             <div class="radio-group">
-                                <label class="radio-label"><input type="radio" name="gender" value="male" <?= ($formData['gender'] ?? '') === 'male' ? 'checked' : '' ?> required> Мужской</label>
-                                <label class="radio-label"><input type="radio" name="gender" value="female" <?= ($formData['gender'] ?? '') === 'female' ? 'checked' : '' ?>> Женский</label>
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="male" 
+                                           <?= ($formData['gender'] ?? '') === 'male' ? 'checked' : '' ?> required>
+                                    Мужской
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="female"
+                                           <?= ($formData['gender'] ?? '') === 'female' ? 'checked' : '' ?>>
+                                    Женский
+                                </label>
                             </div>
                             <span class="error-message" data-error="gender"></span>
                         </div>
@@ -407,7 +410,9 @@ echo renderHeader('Бронирование столика');
                             <label for="dishes">Любимые блюда *</label>
                             <select id="dishes" name="dishes[]" multiple required size="8">
                                 <?php foreach (Validator::getAllowedDishes() as $dish): ?>
-                                <option value="<?= $dish ?>" <?= in_array($dish, $formData['dishes'] ?? []) ? 'selected' : '' ?>><?= $dish ?></option>
+                                <option value="<?= $dish ?>" <?= in_array($dish, $formData['dishes'] ?? []) ? 'selected' : '' ?>>
+                                    <?= $dish ?>
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                             <small>Удерживайте Ctrl для выбора нескольких</small>
@@ -416,13 +421,15 @@ echo renderHeader('Бронирование столика');
                         
                         <div class="form-group full-width">
                             <label for="biography">Пожелания</label>
-                            <textarea id="biography" name="biography" rows="3"><?= htmlspecialchars($formData['biography'] ?? '') ?></textarea>
+                            <textarea id="biography" name="biography" rows="3"
+                                      placeholder="Ваши пожелания к столику..."><?= htmlspecialchars($formData['biography'] ?? '') ?></textarea>
                         </div>
                         
                         <div class="form-group full-width">
                             <label class="checkbox-label">
-                                <input type="checkbox" name="agreed" value="1" <?= !empty($formData['agreed']) ? 'checked' : '' ?> required>
-                                Согласен с условиями бронирования *
+                                <input type="checkbox" name="agreed" value="1"
+                                       <?= !empty($formData['agreed']) ? 'checked' : '' ?> required>
+                                Я согласен с условиями бронирования *
                             </label>
                             <span class="error-message" data-error="agreed"></span>
                         </div>
