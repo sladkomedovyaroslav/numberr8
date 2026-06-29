@@ -241,23 +241,34 @@ a:hover {
 .hero {
     height: 90vh;
     min-height: 600px;
-    background: linear-gradient(135deg, rgba(26,26,26,0.7), rgba(198,40,40,0.5)),
-                url('../../images/hero-bg.jpg') center/cover no-repeat;
+    background-image: url('../../images/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--white);
     position: relative;
-    background-color: #1a1a1a; /* Заглушка если фото нет */
+    /* Заглушка, если фото нет */
+    background-color: #1a1a1a;
 }
-.hero-overlay {
+
+/* Затемнение поверх фото */
+.hero::after {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.hero-overlay {
+    display: none; /* Отключаем, так как используем ::after */
 }
 
 .hero-content {
@@ -271,7 +282,7 @@ a:hover {
     font-size: 64px;
     margin-bottom: 20px;
     color: var(--gold);
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 .hero-subtitle {

@@ -211,7 +211,6 @@ echo renderHeader('Бронирование столика');
 
 <!-- HERO -->
 <header class="hero">
-    <div class="hero-overlay"></div>
     <div class="hero-content">
         <h1>Ресторан «Вкус Востока»</h1>
         <p class="hero-subtitle">Авторская кухня с восточным колоритом</p>
